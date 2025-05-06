@@ -8,23 +8,17 @@ import sys
 import os
 from dotenv import load_dotenv
 
+# Import the DATABASE_URL from services.config.py
+from app.config import DATABASE_URL
+
 # Load the .env file
 load_dotenv()
-
-# Now, Alembic can access the environment variable
-DB_USER = os.getenv("DB_USER")
-DB_PASS = os.getenv("DB_PASS")
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-DB_NAME = os.getenv("DB_NAME")
-# Dynamically build the database URL
-DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# Override the sqlalchemy.url in alembic.ini with the actual URL
+# Set the sqlalchemy.url dynamically using DATABASE_URL from config.py
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # Interpret the config file for Python logging.
