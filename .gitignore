@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+*.env
+
+# FastAPI temp files
+*.log
+*.db
+temp.*
+
+# Docker
+*.tar
+*.pid
+*.sock
+docker-compose.override.yml
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# __pycache__ in any folder
+**/__pycache__/
+
+# Ignore uploaded file cache
+backend/temp.*
