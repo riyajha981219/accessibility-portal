@@ -19,6 +19,23 @@ def get_summary_from_gemini(content: str):
         3. Any anecdotes mentioned
     """
 
+    """
+        EXPECTED PAYLOAD:
+        curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY" \
+        -H 'Content-Type: application/json' \
+        -X POST \
+        -d '{
+            "contents": [
+            {
+                "parts": [
+                {
+                    "text": "Explain how AI works in a few words"
+                }
+                ]
+            }
+            ]
+        }'
+    """
     payload = {
         "contents": [
             {
@@ -45,21 +62,3 @@ def get_summary_from_gemini(content: str):
         return summary_text
     else:
         return f"Error from Gemini API: {response.text}"
-
-"""
-curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -X POST \
-  -d '{
-    "contents": [
-      {
-        "parts": [
-          {
-            "text": "Explain how AI works in a few words"
-          }
-        ]
-      }
-    ]
-  }'
-
-"""
