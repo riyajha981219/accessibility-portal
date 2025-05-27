@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 
@@ -9,14 +10,26 @@ GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.
 
 def get_summary_from_gemini(content: str):
     prompt = f"""
-        Summarize this content:
+       Analyze the following content and return the result in JSON format with keys: 
+        "summary", "important_points", and "anecdotes".
 
+        Content:
+        \"\"\"
         {content}
+        \"\"\"
 
-        Please provide:
-        1. A short summary
-        2. Important points
-        3. Any anecdotes mentioned
+        Example output format:
+        {{
+        "summary": "Short summary here...",
+        "important_points": [
+            "Point 1",
+            "Point 2"
+        ],
+        "anecdotes": [
+            "Anecdote 1",
+            "Anecdote 2"
+        ]
+        }}
     """
 
     """
@@ -55,10 +68,17 @@ def get_summary_from_gemini(content: str):
     }
 
     response = requests.post(GEMINI_URL, json=payload, headers=headers)
+
     if response.status_code == 200:
-        data = response.json()
-        # Extract the generated text from the API response
-        summary_text = data["candidates"][0]["content"]["parts"][0]["text"]
-        return summary_text
+        try:
+            text = response.json()["candidates"][0]["content"]["parts"][0]["text"]
+             # Clean markdown-formatted JSON
+            if text.strip().startswith("```json"):
+                text = text.strip().removeprefix("```json").removesuffix("```").strip()
+
+            parsed = json.loads(text)
+            return parsed
+        except Exception as e:
+            return {"summary": text, "important_points": [], "anecdotes": [], "note": "Unstructured response"}
     else:
-        return f"Error from Gemini API: {response.text}"
+        return {"error": response.text}
