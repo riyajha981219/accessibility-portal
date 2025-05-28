@@ -30,3 +30,6 @@ Thumbs.db
 
 # Ignore uploaded file cache
 backend/temp.*
+
+# Ignore whisper models
+whisper-models/
