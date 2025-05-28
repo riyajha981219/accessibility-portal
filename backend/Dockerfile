@@ -1,16 +1,19 @@
-FROM python:3.10-slim
+FROM python:3.10
 
-# Create app directory
+# Install system dependencies
+RUN apt-get update && apt-get install -y ffmpeg
+
+# Set working directory
 WORKDIR /app
 
-# Copy everything into container
-COPY . .
-
-# Install dependencies
+# Copy requirements and install Python deps
+RUN pip install torch
+RUN pip install openai-whisper
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 8000
-EXPOSE 8000
+# Copy rest of the app
+COPY . .
 
-# Run the app
+# Run FastAPI app
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
