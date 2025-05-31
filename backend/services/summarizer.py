@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 import json
+import re
 
 load_dotenv()
 
@@ -10,15 +11,18 @@ GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.
 
 def get_summary_from_gemini(content: str):
     prompt = f"""
-       Analyze the following content and return the result in JSON format with keys: 
+        Analyze the following content and return a structured JSON object with keys:
         "summary", "important_points", and "anecdotes".
+
+        Each key should contain relevant content based on the analysis of the input.
+        Do NOT include any markdown, code fences, or explanations — only return valid JSON.
 
         Content:
         \"\"\"
         {content}
         \"\"\"
 
-        Example output format:
+        Expected output format:
         {{
         "summary": "Short summary here...",
         "important_points": [
@@ -72,13 +76,26 @@ def get_summary_from_gemini(content: str):
     if response.status_code == 200:
         try:
             text = response.json()["candidates"][0]["content"]["parts"][0]["text"]
-             # Clean markdown-formatted JSON
-            if text.strip().startswith("```json"):
-                text = text.strip().removeprefix("```json").removesuffix("```").strip()
+
+            # Extract content inside ```json ... ``` if present
+            if "```json" in text:
+                match = re.search(r"```json(.*?)```", text, re.DOTALL)
+                if match:
+                    text = match.group(1).strip()
+            else:
+                # Fallback: clean up extra whitespace
+                text = text.strip()
 
             parsed = json.loads(text)
             return parsed
+
         except Exception as e:
-            return {"summary": text, "important_points": [], "anecdotes": [], "note": "Unstructured response"}
+            # Fall back gracefully if parsing fails
+            return {
+                "summary": text,
+                "important_points": [],
+                "anecdotes": [],
+                "note": "Unstructured or unparseable response"
+            }
     else:
         return {"error": response.text}
