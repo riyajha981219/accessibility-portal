@@ -2,7 +2,7 @@ export default function SummaryPanel({ summary }) {
   // Filter available sections
   const sections = [
     summary.summary && {
-      title: "Summary", 
+      title: "Summary",
       content: <p className="whitespace-pre-line">{summary.summary}</p>
     },
     summary.important_points && summary.important_points.length > 0 && {
@@ -29,14 +29,17 @@ export default function SummaryPanel({ summary }) {
 
   return (
     <div className="h-full bg-white rounded-2xl shadow p-4 overflow-y-auto">
-    <div className={`grid gap-6 h-full w-full`} style={{ gridTemplateRows: `repeat(${sections.length}, 1fr)` }}>
-      {sections.map((section, idx) => (
-        <div key={idx} className="p-6 overflow-auto">
-          <h2 className="text-xl font-bold mb-4">{section.title}</h2>
-          <div className="text-gray-800">{section.content}</div>
+      <h1 className="text-xl font-bold mb-4 italic">Summary To Your File</h1>
+      <div className="bg-white overflow-y-auto">
+        <div className={`grid gap-6 h-full w-full`} style={{ gridTemplateRows: `repeat(${sections.length}, 1fr)` }}>
+          {sections.map((section, idx) => (
+            <div key={idx} className="p-6 overflow-auto">
+              <h2 className="text-xl font-bold mb-4">{section.title}</h2>
+              <div className="text-gray-800">{section.content}</div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
     </div>
   );
 }

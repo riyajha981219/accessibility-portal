@@ -4,6 +4,7 @@ import axios from 'axios';
 export default function UploadPanel({ onFileUpload, selectedOptions, setSelectedOptions }) {
   const [file, setFile] = useState(null);
   const [isSummarizing, setIsSummarizing] = useState(false);
+  const [url, setUrl] = useState("");
 
   const handleUpload = async (e) => {
     if (!file) return;
@@ -20,6 +21,24 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
       console.error('Upload failed', err);
     } finally {
       setIsSummarizing(false); // Stop loading
+    }
+  };
+
+  const handleUrlSubmit = async (e) => {
+    if (url == "") return;
+    setIsSummarizing(true);
+    const payload = {
+      "url": url
+    }
+    try {
+      const res = await axios.post('http://localhost:8000/summarize-url', payload, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      onFileUpload(res.data.summary);
+    } catch (err) {
+      console.error('URL could not be parsed', err);
+    } finally {
+      setIsSummarizing(false);
     }
   };
 
@@ -41,6 +60,29 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
         >
           {isSummarizing ? "Summarizing for You!" : "Upload and Summarize"}
         </button>
+      </div>
+      <div className="mt-6">
+        <h2 className="text-xl font-bold mb-4">Summarize from URL</h2>
+        <div className="flex justify-between gap-4">
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Enter article or research paper URL"
+            className="flex-1 max-w-md px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            onClick={handleUrlSubmit}
+            disabled={isSummarizing}
+            className={`px-4 py-2 rounded bg-blue-600 text-white font-semibold transition
+        ${isSummarizing
+                ? 'bg-blue-400 cursor-not-allowed opacity-70'
+                : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'}
+      `}
+          >
+            {isSummarizing ? "Summarizing for You!" : "Summarize URL"}
+          </button>
+        </div>
       </div>
     </div>
   );
