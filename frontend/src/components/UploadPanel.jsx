@@ -4,7 +4,7 @@ import axios from 'axios';
 export default function UploadPanel({ onFileUpload, selectedOptions, setSelectedOptions }) {
   const [file, setFile] = useState(null);
   const [isSummarizing, setIsSummarizing] = useState(false);
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState("");
 
   const handleUpload = async (e) => {
     if (!file) return;
@@ -25,7 +25,7 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
   };
 
   const handleUrlSubmit = async (e) => {
-    if (!url) return;
+    if (url == "") return;
     setIsSummarizing(true);
     const payload = {
       "url": url
