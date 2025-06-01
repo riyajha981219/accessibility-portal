@@ -13,13 +13,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Verify GCP_SA_KEY secret is set
+        run: |
+          if [ -z "${{ secrets.GCP_SA_KEY }}" ]; then
+            echo "GCP_SA_KEY secret is NOT set!"
+            exit 1
+          else
+            echo "GCP_SA_KEY secret is set ✔️"
+          fi
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: summarize-ai-458912
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
-
+      - name: Check gcloud authentication
+        run: gcloud auth list
       - name: Build and Push Docker image
         working-directory: ./backend
         run: |
