@@ -3,7 +3,7 @@ import requests
 from dotenv import load_dotenv
 import json
 import re
-from utils.secret_manager import get_secret
+from services.secret_manager import get_secret
 
 PROJECT_ID = "summarize-ai-458912"
 GEMINI_API_KEY = get_secret(PROJECT_ID, "GEMINI_API_KEY")
