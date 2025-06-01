@@ -30,8 +30,9 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
     const payload = {
       "url": url
     }
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
     try {
-      const res = await axios.post('http://localhost:8000/summarize-url', payload, {
+      const res = await axios.post(`${backendUrl}/summarize-url`, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
       onFileUpload(res.data.summary);
