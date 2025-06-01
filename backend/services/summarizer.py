@@ -3,10 +3,13 @@ import requests
 from dotenv import load_dotenv
 import json
 import re
+from utils.secret_manager import get_secret
+
+PROJECT_ID = "summarize-ai-458912"
+GEMINI_API_KEY = get_secret(PROJECT_ID, "GEMINI_API_KEY")
 
 load_dotenv()
-
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
 
 def get_summary_from_gemini(content: str):
