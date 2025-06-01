@@ -5,6 +5,7 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
   const [file, setFile] = useState(null);
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [url, setUrl] = useState("");
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleUpload = async (e) => {
     if (!file) return;
@@ -13,7 +14,7 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
     formData.append('file', file);
 
     try {
-      const res = await axios.post('http://localhost:8000/summarize-file', formData, {
+      const res = await axios.post(`${backendUrl}/summarize-file`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       onFileUpload(res.data.summary);
@@ -30,7 +31,6 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
     const payload = {
       "url": url
     }
-    const backendUrl = process.env.REACT_APP_BACKEND_URL;
     try {
       const res = await axios.post(`${backendUrl}/summarize-url`, payload, {
         headers: { 'Content-Type': 'application/json' },
