@@ -81,7 +81,7 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
                 : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'}
       `}
           >
-            {isSummarizing ? "Summarizing for You!" : "Summarize URL"}
+            {isSummarizing ? "Summarizing for You!" : "Summarize!"}
           </button>
         </div>
       </div>
