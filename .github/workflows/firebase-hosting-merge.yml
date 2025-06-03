@@ -12,9 +12,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        env: [prod, staging]
 
     steps:
       - name: Checkout repository
