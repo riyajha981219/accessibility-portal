@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Copy production env
-        run: 
+        run: |
           if [ "${{ matrix.env }}" = "prod" ]; then
             cp ./frontend/.env.production ./frontend/.env
           else
