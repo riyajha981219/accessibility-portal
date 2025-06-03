@@ -37,5 +37,6 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUMMARIZE_AI_458912 }}
           projectId: summarize-ai-458912
+          channelId: live
           target: ${{ matrix.env }}
           entryPoint: ./frontend
