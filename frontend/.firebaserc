@@ -3,13 +3,11 @@
     "default": "summarize-ai-458912"
   },
   "targets": {
-    "hosting": {
-      "prod": [
-        "summarize-ai-458912"
-      ],
-      "staging": [
-        "summarizer-ai-staging"
-      ]
+    "summarize-ai-458912": {
+      "hosting": {
+        "prod": ["summarize-ai-458912"],
+        "staging": ["summarizer-ai-staging"]
+      }
     }
   }
 }
