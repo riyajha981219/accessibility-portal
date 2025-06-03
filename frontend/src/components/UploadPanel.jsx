@@ -59,7 +59,7 @@ export default function UploadPanel({ onFileUpload, selectedOptions, setSelected
           className={`px-4 py-2 rounded bg-blue-600 text-white font-semibold transition 
           ${isSummarizing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 cursor-pointer'}`}
         >
-          {isSummarizing ? "Summarizing for You!" : "Summarize!"}
+          {isSummarizing ? "Summarizing for You!" : "Summarize Your File!"}
         </button>
       </div>
       <div className="mt-6">
