@@ -20,9 +20,9 @@ jobs:
       - name: Copy production env
         run: |
           if [ "${{ matrix.env }}" = "prod" ]; then
-            cp ./frontend/.env.production ./frontend/.env
+            echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL_PROD }}" > ./frontend/.env
           else
-            cp ./frontend/.env.staging ./frontend/.env
+            echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL_STAGING }}" > ./frontend/.env
           fi
       - name: Set up Node.js
         uses: actions/setup-node@v4
