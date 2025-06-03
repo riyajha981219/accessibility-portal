@@ -3,7 +3,8 @@ name: Deploy to Cloud Run
 on:
   push:
     branches:
-      - master
+      - prod
+      - staging
 
 jobs:
   deploy:
@@ -26,12 +27,18 @@ jobs:
       - name: Build and Push Docker image
         working-directory: ./backend
         run: |
-          gcloud builds submit --tag gcr.io/summarize-ai-458912/accessible-portal-backend
+          IMAGE_NAME=gcr.io/summarize-ai-458912/summarizer-api-${{ github.ref_name }}
+          gcloud builds submit --tag $IMAGE_NAME
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy summarizer-api \
-            --image gcr.io/summarize-ai-458912/accessible-portal-backend \
+          SERVICE_NAME=summarizer-api
+          if [[ "${{ github.ref_name }}" == "staging" ]]; then
+            SERVICE_NAME=summarizer-api-staging
+          fi
+          IMAGE_NAME=gcr.io/summarize-ai-458912/summarizer-api-${{ github.ref_name }}
+          gcloud run deploy $SERVICE_NAME \
+            --image $IMAGE_NAME \
             --platform managed \
             --region asia-south1 \
             --allow-unauthenticated
