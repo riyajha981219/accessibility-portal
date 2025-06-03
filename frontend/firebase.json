@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "summarize-ai-458912",
+      "target": "prod",
       "public": "dist",
       "ignore": [
         "firebase.json",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "target": "summarizer-ai-staging",
+      "target": "staging",
       "public": "dist",
       "ignore": [
         "firebase.json",
